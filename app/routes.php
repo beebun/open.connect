@@ -11,7 +11,16 @@
 |
 */
 
-Route::get('/', function()
+Route::get('/', "HomeController@index");
+
+Route::get('/user', "HomeController@user");
+
+Route::get('/keyword', "HomeController@keyword");
+
+Route::get('users', function()
 {
-	return View::make('hello');
+    return 'Users!';
 });
+
+Route::get('/view/{fid}', "HomeController@view");
+Route::get('/get_user_data/{fid}', "HomeController@get_user_data");
