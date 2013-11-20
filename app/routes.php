@@ -24,3 +24,4 @@ Route::get('users', function()
 
 Route::get('/view/{fid}', "HomeController@view");
 Route::get('/get_user_data/{fid}', "HomeController@get_user_data");
+Route::get('/view_keyword/{view_keyword}', "HomeController@view_keyword");

@@ -31,8 +31,6 @@ class HomeController extends BaseController {
 
 	public function keyword()
 	{
-
-
 		$data['tag_list'] = DB::table('tag')
                      ->select(DB::raw('count(name) as total , name'))
                      ->groupBy('name')
@@ -62,6 +60,15 @@ class HomeController extends BaseController {
 		}
 
 		$this->layout->content = View::make('user.view_user_data',$data);
+	}
+
+	public function view_keyword($keyword){
+		echo $keyword ;
+		$data['tag_list'] = DB::table('tag')
+							 ->where('name',$keyword)
+		                     ->get();
+
+        $this->layout->content = View::make('keyword.view_keyword',$data);
 	}
 
 	public function get_user_data($fid)
