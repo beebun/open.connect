@@ -2,19 +2,6 @@
 
 class HomeController extends BaseController {
 
-	/*
-	|--------------------------------------------------------------------------
-	| Default Home Controller
-	|--------------------------------------------------------------------------
-	|
-	| You may wish to use controllers instead of, or in addition to, Closure
-	| based routes. That's great! Here is an example controller method to
-	| get you started. To route to this controller, just add the route:
-	|
-	|	Route::get('/', 'HomeController@showWelcome');
-	|
-	*/
-
 	public $layout = 'layouts.default';
 
 	public function index()
@@ -29,17 +16,6 @@ class HomeController extends BaseController {
 		$this->layout->content = View::make('user.view_all_user',$data);
 	}
 
-	public function keyword()
-	{
-		$data['tag_list'] = DB::table('tag')
-                     ->select(DB::raw('count(name) as total , name'))
-                     ->groupBy('name')
-                     ->orderBy('total','desc')
-					 ->having('total', '>', 17)
-                     ->get();
-		$this->layout->content = View::make('keyword.view_all_keyword',$data);
-	}
-
 	public function view($fid)
 	{
 		$post_id = UserPost::where("user_post.user_id",$fid)->get();
@@ -52,23 +28,32 @@ class HomeController extends BaseController {
 
 		if(count($wheres) == 0)
 		{
-			$data['tag_list'] = array();
+			$keyword_list = array();
 		}
 		else
 		{
-			$data['tag_list'] = Tag::whereIn("tag.post_id",$wheres)->get();
+			$keyword_list = Tag::select(DB::raw('distinct(name)'))->whereIn("tag.post_id",$wheres)->get();
 		}
 
+		$frequency = array();
+		$remove = array();
+		for($i=0;$i<count($keyword_list);$i++){
+			$count = $this->get_frequency($keyword_list[$i]->name);
+			if($count >= $this->minimum_support) 
+				array_push($remove, false);
+			else
+				array_push($remove, true);
+
+			array_push($frequency, $count);
+		}
+
+		$data['remove']	= $remove ;
+		$data['frequency'] = $frequency ;		
+		$data['tag_list'] = $keyword_list ;
+		$data['fid'] = $fid ;
+		$data['user_data'] = User::where("user.fid",$fid)->get() ;
+
 		$this->layout->content = View::make('user.view_user_data',$data);
-	}
-
-	public function view_keyword($keyword){
-		echo $keyword ;
-		$data['tag_list'] = DB::table('tag')
-							 ->where('name',$keyword)
-		                     ->get();
-
-        $this->layout->content = View::make('keyword.view_keyword',$data);
 	}
 
 	public function get_user_data($fid)
@@ -81,6 +66,12 @@ class HomeController extends BaseController {
 		<div class="block-name">'.$username.'</div>';
 
 		// $this->layout->content = View::make('user.get_user_data_ajax',$data);
+	}
+
+	public function get_frequency($keyword)
+	{
+		$count = DB::table('tag')->select(DB::raw('count(name) as total'))->where("name",$keyword)->get();
+		return $count[0]->total ;
 	}
 
 }

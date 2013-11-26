@@ -11,5 +11,14 @@ class UserPost extends Eloquent  {
 	 * @var string
 	 */
 	protected $table = 'user_post';
+	
+	public function user()
+	{
+        return $this->belongsTo('User',"user_id");
+    }
 
+ 	public function tags()
+    {
+        return $this->hasMany('Tag',"post_id");
+    }
 }

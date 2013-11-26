@@ -12,4 +12,8 @@ class User extends Eloquent  {
 	 */
 	protected $table = 'user';
 
+ 	public function user_post()
+    {
+        return $this->hasMany('UserPost',"fid");
+    }
 }

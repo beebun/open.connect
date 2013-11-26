@@ -12,4 +12,8 @@ class Tag extends Eloquent  {
 	 */
 	protected $table = 'tag';
 
+	public function user_post()
+	{
+        return $this->belongsTo('UserPost',"post_id");
+    }
 }

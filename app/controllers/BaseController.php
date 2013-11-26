@@ -8,6 +8,7 @@ class BaseController extends Controller {
 	 * @return void
 	 */
 
+	public $minimum_support ; 
 	public $layout = 'layouts.default';
 	
 	protected function setupLayout()
@@ -16,6 +17,18 @@ class BaseController extends Controller {
 		{
 			$this->layout = View::make($this->layout);
 		}
+		$this->minimum_support = self::config_value("minimum_support");
+	}
+
+	static function config_value($name){
+		$value = DB::table('config')->select("value")->where("name",$name)->get();
+		return $value[0]->value ;
+	}
+
+	static function pr($data){
+		echo"<pre>";
+		print_r($data);
+		echo"</pre>";
 	}
 
 }

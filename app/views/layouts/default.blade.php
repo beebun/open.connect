@@ -3,6 +3,7 @@
 <link href="<?php echo asset('css/bootstrap.min.css'); ?>" rel="stylesheet">
 <script src="<?php echo asset('js/jquery-1.10.2.min.js'); ?>"></script>
 <script src="<?php echo asset('js/bootstrap.min.js'); ?>"></script>
+<script src="<?php echo asset('js/d3.v2.js'); ?>"></script>
 
 <!-- <div id="loadingDiv"><br/><br/>Loading....</div> -->
    <script type='text/javascript'>
@@ -27,13 +28,13 @@
 
     <style>
     body{
-    	background-color: #efefef;
+    	background-color: #e0e0e0;
     	font-size: 13px;
     	color: #333;
     }
     .container1{
-    	padding:10px;
-    	width:98%;
+    	/*padding:10px;*/
+    	width:100%;
     	margin:0px auto;
     	margin-top:60px;
     }
@@ -49,7 +50,7 @@
     	width:200px;
     	float:left;
     	height: 60px;
-    	background-color: #e0e0e0;
+    	background-color: #f0f0f0;
     	margin-right: 5px;
     	margin-bottom:5px;
     	color:#333;
@@ -89,7 +90,7 @@
     	margin-right: 5px;
     	margin-bottom: 5px;
     	float:left;
-    	background-color: #e0e0e0;
+    	background-color: #f0f0f0;
     	font-size: 14px;
     	font-weight: bold;
     	border: 1px solid #d0d0d0;
