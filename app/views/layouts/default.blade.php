@@ -4,31 +4,14 @@
 <script src="<?php echo asset('js/jquery-1.10.2.min.js'); ?>"></script>
 <script src="<?php echo asset('js/bootstrap.min.js'); ?>"></script>
 <script src="<?php echo asset('js/d3.v2.js'); ?>"></script>
-
-<!-- <div id="loadingDiv"><br/><br/>Loading....</div> -->
-   <script type='text/javascript'>
-        // $(window).load(function(){
-        //     $(document).ready(function() {
-        //         jQuery.ajaxSetup({
-        //             beforeSend: function() {
-        //                 $('#loadingDiv').show();
-        //             },
-        //             complete: function(){
-        //                 $('#loadingDiv').hide();
-        //             },
-        //             success: function() {}
-        //         });
-        //     });
-        // });
-    </script>
-
+<script src="<?php echo asset('js/grid.js'); ?>"></script>
 
 </head>
     <body>
 
     <style>
     body{
-    	background-color: #e0e0e0;
+    	background-color: #dfdfdf;
     	font-size: 13px;
     	color: #333;
     }
@@ -36,7 +19,7 @@
     	/*padding:10px;*/
     	width:100%;
     	margin:0px auto;
-    	margin-top:60px;
+    	margin-top:50px;
     }
 
     #header{
@@ -54,7 +37,20 @@
     	margin-right: 5px;
     	margin-bottom:5px;
     	color:#333;
-    	border: 1px solid #d0d0d0;
+    	/*border: 1px solid #d0d0d0;*/
+        box-shadow: 1px 1px 1px 0px #d0d0d0;
+    }
+     .block-flat{
+        padding:5px;
+        padding-top:3px;
+        width:200px;
+        float:left;
+        height: 60px;
+        background-color: #f5f5f5;
+        margin-right: 5px;
+        margin-bottom:5px;
+        color:#333;
+        /*border: 1px solid #d0d0d0;*/
     }
     .block:hover{
     	background-color: #fff;
@@ -93,7 +89,8 @@
     	background-color: #f0f0f0;
     	font-size: 14px;
     	font-weight: bold;
-    	border: 1px solid #d0d0d0;
+    	/*border: 1px solid #d0d0d0;*/
+        box-shadow: 1px 1px 1px 0px #d0d0d0;
     }
     .keyword-block:hover{
     	background-color: #fff;
@@ -106,24 +103,59 @@
     	background-color: #333;
     	width:50px;
     }
+
+
+    .btn{
+        border-radius: 0px;
+        background-color:#666;
+        border-color:#666;
+    }
+    .btn:hover{
+        border-radius: 0px;
+        background-color:#333;
+        border-color:#333;
+    }
+    .btn-large{
+        /*width:200px;*/
+        height:50px;font-size:20px;padding:10px;
+    }
+    .body{
+        width:1025px;margin:0px auto;
+    }
     </style>
 
 		<nav class="navbar navbar-default navbar-fixed-top navbar-inverse" role="navigation">
-		  <div class="navbar-header">
-		    <a class="navbar-brand" href="<?php echo url('/'); ?>">open-connect</a>
+		  <div style="width:1025px;margin:0px auto;">
+          <div class="navbar-header">
+		    <a class="navbar-brand" href="<?php echo url('/'); ?>">Open.Connect</a>
 		  </div>
 		  <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 		    <ul class="nav navbar-nav">
 		      <li class="active"><a href="<?php echo url('/'); ?>">Home</a></li>
 		      <li><a href="<?php echo url('/user'); ?>">User</a></li>
 		      <li><a href="<?php echo url('/keyword'); ?>">Keyword</a></li>
-		      <li><a href="<?php echo url('/keyword'); ?>">Import Data</a></li>
 		    </ul>
 		  </div>
+          </div>
 		</nav>
+
         <div class="container1">
-            @yield('content')
+                @yield('content')
         </div>
     </body>
 </html>
+
+
+<script type="text/javascript">
+    $(".container1").gridalicious({
+  animate: true,
+  animationOptions: {
+    queue: true,
+    speed: 200,
+    duration: 300,
+    effect: 'fadeInOnAppear',
+    complete: onComplete
+  }
+});
+</script>
 

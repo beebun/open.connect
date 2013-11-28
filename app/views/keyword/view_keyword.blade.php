@@ -1,31 +1,31 @@
 @section('content')
 
-<div style="background-color:#0099cc;width:100%;margin-left:0px;margin-top:-9px;padding:5px">
-	<div style="float:left"><img class="fb-pic" src="" style="height:100px;width:100px;border:3px solid #fff"></div>
-	<div style="float:left;margin-left:10px;color:#fff;">
-		<h3 style="line-height:30px"><span style="color:#333">Keyword</span><br/><?php echo $keyword ; ?></h3>
+<div style="background-color:#fff;width:100%;margin-left:0px;padding:5px;box-shadow: 1px 1px 1px 0px #d0d0d0;">
+	<div style="width:1025px;margin:0px auto;">
+		<div style="float:left"><img class="fb-pic" src="" style="height:100px;width:100px;border:3px solid #fff"></div>
+		<div style="float:left;margin-left:10px;color:#333;margin-top:-10px">
+			<h3 style="line-height:30px"><?php echo $keyword ; ?></h3>
+			<div style="font-size:15px;"><strong><?php echo $count[0]->total; ?></strong> times referred</div>
+			<div style="font-size:15px;"><strong><?php echo count($user_list); ?></strong> engaged users</div>
+		</div>
+		<div style="float:right">
+			<a href="<?php echo url('/keyword/graph/'.$keyword.''); ?>" class="btn btn-success btn-large" style="margin-top:25px;margin-right:20px;">View Graph</a></div>
+		<div style="clear:both"></div>
 	</div>
-	<div style="float:right">
-		<a href="<?php echo url('/keyword/graph/'.$keyword.''); ?>" class="btn btn-info" style="margin-top:25px;margin-right:20px;width:200px;height:50px;font-size:20px;padding:10px">View Graph</a></div>
-	<div style="clear:both"></div>
 </div>
 
-<div style="background-color:#e0e0e0;width:100%;margin-left:0px;padding:15px">
-<?php /*for($i=0;$i<count($keyword_list);$i++):?>
-	<?php if(!$remove[$i]): ?>
-		<a href="" class="btn btn-primary" style="margin-right:5px;margin-top:5px"><?php echo $keyword_list[$i]->name; ?> - <?php echo $frequency[$i] ; ?></a>
-	<?php endif ?>
-<?php endfor*/ ?>
-<h3>Talked (<?php echo $count[0]->total; ?>)</h3>
-<h3>Engaged User (<?php echo count($user_list); ?>)</h3><br/>
-<?php foreach($user_list as $each):?>
-	<a href="<?php echo url('view',$each->fid); ?>">
-	<div class="block" id="<?php echo $each->fid ; ?>">
-	<div class="block-img"><img class="fb-pic border" src="http://graph.facebook.com/<?php echo $each->fid ; ?>/picture?type=square" ></div>
-	<div class="block-name"><?php echo $each->username; ?> <?php echo $user_frequency[$each->fid]; ?></div>
-	</div>
-	</a>
-<?php endforeach ?>
+<div style="width:1025px;margin:0px auto;">
+	<br/>
+	<?php foreach($user_list as $each):?>
+		<a href="<?php echo url('view',$each->fid); ?>">
+		<div class="block" id="<?php echo $each->fid ; ?>">
+		<div class="block-img"><img class="fb-pic border" src="http://graph.facebook.com/<?php echo $each->fid ; ?>/picture?type=square" ></div>
+		<div class="block-name"><?php echo $each->username; ?> <?php //echo $user_frequency[$each->fid]; ?></div>
+		</div>
+		</a>
+	<?php endforeach ?>
+
+	<div style="clear:both"></div>
 </div>
 
 @endsection
