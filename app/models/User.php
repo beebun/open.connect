@@ -27,4 +27,8 @@ class User extends Eloquent  {
     	return $data ;
     }
 
+    public function get_fid($id){
+        $data = User::where("id",$id)->first();
+        return $data->fid;
+    }
 }

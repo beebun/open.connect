@@ -1,10 +1,11 @@
 <html>
 <head>
-<link href="<?php echo asset('css/bootstrap.min.css'); ?>" rel="stylesheet">
+<link href="<?php echo asset('css/bootstrap.css'); ?>" rel="stylesheet">
 <script src="<?php echo asset('js/jquery-1.10.2.min.js'); ?>"></script>
 <script src="<?php echo asset('js/bootstrap.min.js'); ?>"></script>
 <script src="<?php echo asset('js/d3.v2.js'); ?>"></script>
 <script src="<?php echo asset('js/grid.js'); ?>"></script>
+<script src="<?php echo asset('js/bootbox.js'); ?>"></script>
 
 </head>
     <body>
@@ -77,6 +78,10 @@
     	color: #666;
     	font-weight: bold;
     }
+    .alert{
+        font-size: 20px;
+        /*color: red;*/
+    }
     .keyword-block{
     	color: #333;
     	text-align: center;
@@ -122,6 +127,19 @@
     .body{
         width:1025px;margin:0px auto;
     }
+
+    .mutual-block{
+        box-shadow: 1px 1px 1px 0px #d0d0d0;
+        width:200px;
+        padding:10px;
+        height:100px;
+        background-color:#efefef;
+        float:left;margin-right:5px;
+        margin-bottom:5px
+    }
+    .mutual-block:hover{
+        background-color: #fff;
+    }
     </style>
 
 		<nav class="navbar navbar-default navbar-fixed-top navbar-inverse" role="navigation">
@@ -131,7 +149,7 @@
 		  </div>
 		  <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 		    <ul class="nav navbar-nav">
-		      <li class="active"><a href="<?php echo url('/'); ?>">Home</a></li>
+		      <li class=""><a href="<?php echo url('/'); ?>">Home</a></li>
 		      <li><a href="<?php echo url('/user'); ?>">User</a></li>
 		      <li><a href="<?php echo url('/keyword'); ?>">Keyword</a></li>
 		    </ul>

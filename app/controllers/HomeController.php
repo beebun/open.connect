@@ -27,7 +27,7 @@ class HomeController extends BaseController {
 
 	public function user()
 	{	
-		$user = User::limit("80")->get();
+		$user = User::limit("500")->get();
 		$data['user_list'] = $user ;
 		$this->layout->content = View::make('user.view_all_user',$data);
 	}
@@ -57,7 +57,11 @@ class HomeController extends BaseController {
 		for($i=0;$i<count($keyword_list);$i++){
 			$count = $this->get_frequency($keyword_list[$i]->name);
 
+
+			$freq = $this->tag->get_frequency_by_user($keyword_list[$i]->name,$fid);
+
 			$keyword_list[$i]->frequency = $count ;
+			$keyword_list[$i]->ratio = ( $freq / $count ) * 100 ;
 			if($count >= $this->minimum_support) 
 				array_push($keyword_temp,$keyword_list[$i]);
 		}
@@ -118,11 +122,13 @@ class HomeController extends BaseController {
 		return $keyword_temp ;
 	}
 
-	public function mutual_interests(){
+	public function mutual_interests($fid1, $fid2){
 		$data = array();
 
-		$fid1 = "1575824108" ;
-		$fid2 = "100001122286399" ;
+		$fid1 = $this->user->get_fid($fid1);
+		$fid2 = $this->user->get_fid($fid2);
+		// $fid1 = "1575824108" ;
+		// $fid2 = "100001122286399" ;
 
 		$list1 = $this->get_keyword_from_user($fid1);
 		$list2 = $this->get_keyword_from_user($fid2);

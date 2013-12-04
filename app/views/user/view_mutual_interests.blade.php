@@ -26,10 +26,13 @@
 <hr class="body" style="margin-bottom:10px">
 <div class="body" style="margin-top:0px">
 		<div style="color:#333;font-size:20px;font-weight:bold;margin-bottom:10px">Keyword</div>
+		<?php if(count($intersect) == 0 ):?>
+			<span style="font-weight:bold;color:#999">no mutual keywords</span>
+		<?php endif ?>
 <?php foreach($intersect as $each): ?>
-
-	<div style="box-shadow: 1px 1px 1px 0px #d0d0d0;width:200px;padding:10px;height:100px;background-color:#efefef;float:left;margin-right:5px;margin-bottom:5px">
-		<span style="font-size:20px"><?php echo $each->name ; ?></span><br/><br/>
+	<a href="<?php echo url('keyword',$each->name); ?>">
+	<div class="mutual-block">
+		<span style="font-size:20px;color:#333"><?php echo $each->name ; ?></span><br/><br/>
 		<div style="font-weight:bold;color:#666;float:right;margin-left:5px"><?php printf("%.2f%%",$each->ratio); ?></div>
 		<div class="progress progress-striped">
 			<?php if($each->ratio > 50) $str="success" ;?>
@@ -38,7 +41,7 @@
 			</div>
 		</div>
 	</div>
-
+	</a>
 <?php endforeach ?>	
 </div>
 @endsection

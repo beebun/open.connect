@@ -14,7 +14,7 @@
 Route::get('/', "HomeController@index");
 Route::get('/user', "HomeController@user");
 Route::get('/keyword', "HomeController@keyword");
-Route::get('/mutual_interests', "HomeController@mutual_interests");
+Route::get('/mutual_interests/{fid1}/{fid2}', "HomeController@mutual_interests");
 
 
 Route::get('users', function()
