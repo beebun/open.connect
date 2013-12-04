@@ -109,11 +109,10 @@ class HomeController extends BaseController {
 		$remove = array();
 		$keyword_temp = array();
 		for($i=0;$i<count($keyword_list);$i++){
-			$count = $this->get_frequency($keyword_list[$i]->name);
-
-			$keyword_list[$i]->frequency = $count ;
-			if($count >= $this->minimum_support) 
-				array_push($keyword_temp,$keyword_list[$i]);
+			// $count = $this->get_frequency($keyword_list[$i]->name);
+			// $keyword_list[$i]->frequency = $count ;
+			// if($count >= $this->minimum_support) 
+			array_push($keyword_temp,$keyword_list[$i]);
 		}
 
 		return $keyword_temp ;
@@ -127,12 +126,30 @@ class HomeController extends BaseController {
 
 		$list1 = $this->get_keyword_from_user($fid1);
 		$list2 = $this->get_keyword_from_user($fid2);
+
+		$intersect = array_intersect($list1,$list2);
+		$intersect = array_values($intersect);
 		
+		for($i=0;$i<count($intersect);$i++){
+			$intersect[$i]->f1 = $this->tag->get_frequency_by_user($intersect[$i]->name,$fid1);
+			$intersect[$i]->f2 = $this->tag->get_frequency_by_user($intersect[$i]->name,$fid2);
+
+			if($intersect[$i]->f1 < $intersect[$i]->f2){
+				$intersect[$i]->ratio = $intersect[$i]->f1 / $intersect[$i]->f2 ;
+			}else{
+				$intersect[$i]->ratio = $intersect[$i]->f2 / $intersect[$i]->f1 ;
+			}
+			
+			$intersect[$i]->ratio = $intersect[$i]->ratio*100;
+		}
+
 		$data['list1'] = $list1 ;
 		$data['list2'] = $list2 ;
-		// dd($list1);
+		$data['intersect'] = $intersect ;
 
-		// dd($list2);
+		$data['user1'] = $this->user->get($fid1);
+		$data['user2'] = $this->user->get($fid2);
+
 		$this->layout->content = View::make('user.view_mutual_interests',$data);
 	}
 

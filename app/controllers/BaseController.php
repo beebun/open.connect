@@ -10,6 +10,13 @@ class BaseController extends Controller {
 
 	public $minimum_support ; 
 	public $layout = 'layouts.default';
+	public $user;
+	public $tag;
+
+	public function __construct(){
+		$this->user = new User ;
+		$this->tag = new Tag ;
+	}
 	
 	protected function setupLayout()
 	{

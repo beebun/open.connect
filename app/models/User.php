@@ -16,4 +16,15 @@ class User extends Eloquent  {
     {
         return $this->hasMany('UserPost',"fid");
     }
+
+    public function get_username($fid){
+    	$data = User::where("fid",$fid)->first();
+    	return $data->username ;
+    }
+
+    public function get($fid){
+    	$data = User::where("fid",$fid)->first();
+    	return $data ;
+    }
+
 }
