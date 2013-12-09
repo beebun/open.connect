@@ -62,7 +62,7 @@ class HomeController extends BaseController {
 
 			$keyword_list[$i]->frequency = $count ;
 			$keyword_list[$i]->ratio = ( $freq / $count ) * 100 ;
-			if($count >= $this->minimum_support) 
+			// if($count >= $this->minimum_support) 
 				array_push($keyword_temp,$keyword_list[$i]);
 		}
 	

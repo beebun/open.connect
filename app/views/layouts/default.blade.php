@@ -152,6 +152,7 @@
 		      <li class=""><a href="<?php echo url('/'); ?>">Home</a></li>
 		      <li><a href="<?php echo url('/user'); ?>">User</a></li>
 		      <li><a href="<?php echo url('/keyword'); ?>">Keyword</a></li>
+            <li><a href="<?php echo url('/keyword'); ?>">Me</a></li>
 		    </ul>
 		  </div>
           </div>
