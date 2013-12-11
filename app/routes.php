@@ -11,16 +11,13 @@
 |
 */
 
+
+Route::get('/login', "HomeController@sign_in");
 Route::get('/', "HomeController@index");
 Route::get('/user', "HomeController@user");
 Route::get('/keyword', "HomeController@keyword");
 Route::get('/mutual_interests/{fid1}/{fid2}', "HomeController@mutual_interests");
 
-
-Route::get('users', function()
-{
-    return 'Users!';
-});
 
 /*	UserController	*/
 Route::get('/view/{fid}', "HomeController@view");
@@ -32,3 +29,10 @@ Route::get('/keyword/{keyword}', "KeywordController@view");
 Route::get('/count/{keyword}', "KeywordController@get_frequency");
 Route::get('/test', "KeywordController@get_frequency_by_user");
 Route::get('/keyword/graph/{keyword}',"KeywordController@view_keyword_graph");
+
+Route::get('/home', "UserController@home");
+Route::get('/sign_in', "UserController@sign_in");
+Route::get('/sign_out', "UserController@sign_out");
+Route::post('/fb_callback', "UserController@fb_callback");
+
+Route::get('/me',"MeController@index");

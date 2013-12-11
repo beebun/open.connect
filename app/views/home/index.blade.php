@@ -7,9 +7,9 @@
 	</div>
 </div>
 
-<div class="body" style="margin-top:10px">
+<div class="body" style="margin-top:10px;">
 
-	<div style="width:50%;float:left;padding:10px;background-color:#fff;margin-right:10px;box-shadow: 1px 1px 1px 0px #d0d0d0;">
+	<div style="width:57%;float:left;padding:10px;background-color:#fff;margin-right:10px;box-shadow: 1px 1px 1px 0px #d0d0d0;">
 		<div style="font-size:20px;margin-bottom:10px">Suggested Keywords</div>
 		<?php $i = 1; ?>
 		<?php foreach($tag_list as $each): ?>
@@ -25,7 +25,6 @@
 		<div style="font-size:20px;margin-bottom:10px">Top Connected User</div>
 		<?php foreach($user_list as $each): ?>
 			<a href="<?php echo url('view',$each->fid); ?>">
-			<!-- <div class="block" id="<?php echo $each->fid ; ?>"></div> -->
 			<div class="block-flat" id="<?php echo $each->fid ; ?>">
 			<div class="block-img"><img class="fb-pic border" src="http://graph.facebook.com/<?php echo $each->fid ; ?>/picture?type=square" ></div>
 			<div class="block-name"><?php echo $each->username; ?></div>
@@ -38,5 +37,7 @@
 	<div style="clear:both"></div>
 
 </div>
+
+
 
 @endsection

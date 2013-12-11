@@ -17,7 +17,7 @@ class Tag extends Eloquent  {
         return $this->belongsTo('UserPost',"post_id");
     }
 
-	public function get_frequency_by_user($keyword, $fid)
+	public static function get_frequency_by_user($keyword, $fid)
 	{
 		// $keyword = "ลูกค้า";
 		// $fid = "180784812046652";
@@ -30,7 +30,7 @@ class Tag extends Eloquent  {
 		return $tag[0]->total ;
 	}
 
-	public function get_frequency($keyword)
+	public static function get_frequency($keyword)
 	{
 		$count = DB::table('tag')->select(DB::raw('count(name) as total'))->where("name",$keyword)->get();
 		return $count[0]->total ;

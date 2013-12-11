@@ -4,6 +4,10 @@ class KeywordController extends BaseController {
 
 	public $layout = 'layouts.default';
 
+	public function __construct(){
+		$this->beforeFilter('auth');
+	}
+
 	public function index()
 	{	
 		$minimum_support = self::config_value("minimum_support");
@@ -72,8 +76,8 @@ class KeywordController extends BaseController {
 		$keyword_list_temp = $keyword_list ;
 		$keyword_temp = array();
 		for($i=0;$i<count($keyword_list_temp);$i++){
-			$tag = new Tag();
-			$count = $tag->get_frequency($keyword_list_temp[$i]->name);
+			// $tag = new Tag();
+			$count = Tag::get_frequency($keyword_list_temp[$i]->name);
 
 			if($count >= $minimum_support && $keyword_list_temp[$i]->name != $keyword){
 				$keyword_list_temp[$i]->frequency = (int)$count ;

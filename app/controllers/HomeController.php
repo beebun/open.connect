@@ -4,6 +4,14 @@ class HomeController extends BaseController {
 
 	public $layout = 'layouts.default';
 
+	public function __construct(){
+		$this->beforeFilter('auth');
+	}
+
+	public function sign_in(){
+		$this->layout->content = View::make('home.sign_in',$data);
+	}
+
 	public function index()
 	{
 		$minimum_support = self::config_value("minimum_support");
@@ -58,7 +66,7 @@ class HomeController extends BaseController {
 			$count = $this->get_frequency($keyword_list[$i]->name);
 
 
-			$freq = $this->tag->get_frequency_by_user($keyword_list[$i]->name,$fid);
+			$freq = Tag::get_frequency_by_user($keyword_list[$i]->name,$fid);
 
 			$keyword_list[$i]->frequency = $count ;
 			$keyword_list[$i]->ratio = ( $freq / $count ) * 100 ;
@@ -137,8 +145,8 @@ class HomeController extends BaseController {
 		$intersect = array_values($intersect);
 		
 		for($i=0;$i<count($intersect);$i++){
-			$intersect[$i]->f1 = $this->tag->get_frequency_by_user($intersect[$i]->name,$fid1);
-			$intersect[$i]->f2 = $this->tag->get_frequency_by_user($intersect[$i]->name,$fid2);
+			$intersect[$i]->f1 = Tag::get_frequency_by_user($intersect[$i]->name,$fid1);
+			$intersect[$i]->f2 = Tag::get_frequency_by_user($intersect[$i]->name,$fid2);
 
 			if($intersect[$i]->f1 < $intersect[$i]->f2){
 				$intersect[$i]->ratio = $intersect[$i]->f1 / $intersect[$i]->f2 ;

@@ -6,7 +6,7 @@
 <script src="<?php echo asset('js/d3.v2.js'); ?>"></script>
 <script src="<?php echo asset('js/grid.js'); ?>"></script>
 <script src="<?php echo asset('js/bootbox.js'); ?>"></script>
-
+<script src="<?php echo asset('js/imgLiquid.js'); ?>"></script>
 </head>
     <body>
 
@@ -15,6 +15,7 @@
     	background-color: #dfdfdf;
     	font-size: 13px;
     	color: #333;
+        font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif; 
     }
     .container1{
     	/*padding:10px;*/
@@ -140,29 +141,89 @@
     .mutual-block:hover{
         background-color: #fff;
     }
-    </style>
+    .message{
+        background-color: #efefef;
+        padding:10px;
+        margin-top:0px;
+        margin-bottom: 3px;
+        box-shadow: 1px 1px 1px 0px #d0d0d0;
+    }
+    .active{
+        font-weight: bold;
+    }
+    .head1{
+        font-size: 30px;
+    }
 
+     .facebook-btn{
+        -moz-user-select: none;
+        background: #2A49A5;
+        border: 1px solid #082783;
+        box-shadow: 0 1px #4C6BC7 inset;
+        color: white;
+        padding: 13px;
+        text-decoration: none;
+        text-shadow: 0 -1px 0 #082783;
+        font: 18px Helvetica;
+        width:300px;
+        height:50px;
+        text-align:center;
+        margin:0px auto;
+    }
+    
+    </style>
+    <?php 
+    $segment = Request::segment(1);
+    // if($segment == "keyword")
+    // die();
+    ?>
 		<nav class="navbar navbar-default navbar-fixed-top navbar-inverse" role="navigation">
-		  <div style="width:1025px;margin:0px auto;">
+		  <div style="width:1055px;margin:0px auto;">
           <div class="navbar-header">
 		    <a class="navbar-brand" href="<?php echo url('/'); ?>">Open.Connect</a>
 		  </div>
 		  <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-		    <ul class="nav navbar-nav">
-		      <li class=""><a href="<?php echo url('/'); ?>">Home</a></li>
-		      <li><a href="<?php echo url('/user'); ?>">User</a></li>
-		      <li><a href="<?php echo url('/keyword'); ?>">Keyword</a></li>
-            <li><a href="<?php echo url('/keyword'); ?>">Me</a></li>
+            <?php if(Auth::user()): ?>
+            <ul class="nav navbar-nav">
+		      <li <?php if($segment == "") echo 'class="active"' ; ?> ><a href="<?php echo url('/'); ?>">Home</a></li>
+		      <li <?php if($segment == "user") echo 'class="active"' ; ?>><a href="<?php echo url('/user'); ?>">User</a></li>
+		      <li <?php if($segment == "keyword") echo 'class="active"' ; ?>><a href="<?php echo url('/keyword'); ?>">Keyword</a></li>
+              <li <?php if($segment == "me") echo 'class="active"' ; ?>><a href="<?php echo url('/me'); ?>">Me</a></li>
 		    </ul>
+            <?php endif ?>
+
+            <div class="nav navbar-nav navbar-right" style="color:#e0e0e0;margin-right:10px" id="user-block">
+                <?php if(Auth::user()): ?>
+                    <?php $data = Auth::user();?>
+                    <?php $data['photo'] = str_replace("large", "square", $data['photo']) ; ?>
+                    <div style="float:left"><img src="{{ $data['photo']}}" style="border:1px solid #fff;width:40px;margin-top:5px"></div>
+                    <div style="float:left;font-weight:normal;margin-left:5px;margin-top:2px">
+                    <?php echo $data['name']; ?>
+                    <br/> <a href="<?php echo url('sign_out'); ?>" class="btn btn-danger btn-xs" style="border-radius:0px;font-weight:normal">Sign out</a></div>
+                    <!-- <br/> <a href="#" onclick="FB_Logout();" class="btn btn-danger btn-xs" style="border-radius:0px;font-weight:normal">Sign out</a></div> -->
+                    <div style="clear:both"></div>
+                <?php else:?>
+                    <!-- <a href="#" onclick="Login();" style="margin-top:7px" class="btn btn-primary facebook-btn-mini">Sign in with Facebook</a> -->
+                <?php endif ?>
+            </div>
+
 		  </div>
           </div>
 		</nav>
 
         <div class="container1">
+                @if(Session::has('message'))
+                    <div class="message" id="msg"><span style="font-weight:bold">Message</span> {{ Session::get('message')}}<div style="float:right"><a href="javascript:close_msg()">X</a></div></div>
+                @endif
                 @yield('content')
         </div>
     </body>
 </html>
+
+
+
+
+<script src="<?php echo asset('js/facebook.js'); ?>"></script>
 
 
 <script type="text/javascript">
@@ -176,5 +237,9 @@
     complete: onComplete
   }
 });
+
+    function close_msg(){
+        $('#msg').hide(); 
+    }
 </script>
 
