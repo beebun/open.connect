@@ -35,4 +35,16 @@ class Tag extends Eloquent  {
 		$count = DB::table('tag')->select(DB::raw('count(name) as total'))->where("name",$keyword)->get();
 		return $count[0]->total ;
 	}
+
+	public static function remove_by_name($name){
+		DB::table('tag')
+            ->where('name', $name)
+            ->update(array('remove' => 1));
+	}
+
+	public static function add_by_name($name){
+		DB::table('tag')
+            ->where('name', $name)
+            ->update(array('remove' => 0));
+	}
 }

@@ -3,8 +3,9 @@
 class HomeController extends BaseController {
 
 	public $layout = 'layouts.default';
-
+	public $user ;
 	public function __construct(){
+		$this->user = new User ;
 		$this->beforeFilter('auth');
 	}
 
@@ -19,6 +20,7 @@ class HomeController extends BaseController {
 		$data['tag_list'] = DB::table('tag')
                      ->select(DB::raw('count(name) as total , name'))
                      ->groupBy('name')
+                     ->where("remove",0)
                      ->orderBy('total','desc')
 					 ->having('total', '>', $minimum_support)
 					 ->limit('15')
@@ -35,7 +37,7 @@ class HomeController extends BaseController {
 
 	public function user()
 	{	
-		$user = User::limit("500")->get();
+		$user = User::limit("1000")->get();
 		$data['user_list'] = $user ;
 		$this->layout->content = View::make('user.view_all_user',$data);
 	}

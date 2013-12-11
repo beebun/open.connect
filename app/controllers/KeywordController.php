@@ -13,11 +13,37 @@ class KeywordController extends BaseController {
 		$minimum_support = self::config_value("minimum_support");
 
 		$data['tag_list'] = DB::table('tag')
+							->select(DB::raw('count(name) as total , name'))
+							->groupBy('name')
+							->where("remove",0)
+							->orderBy('total','desc')
+							->having('total', '>', $minimum_support)
+							->get();
+        $data['is_view_removed'] = false ;
+		$this->layout->content = View::make('keyword.view_all_keyword',$data);
+	}
+
+	public function remove_tag(){
+		$name = Input::get('name', false);
+		Tag::remove_by_name($name);
+	}
+
+	public function add_tag(){
+		$name = Input::get('name', false);
+		Tag::add_by_name($name);
+	}
+
+	public function view_removed_tags(){
+		$minimum_support = self::config_value("minimum_support");
+
+		$data['tag_list'] = DB::table('tag')
                      ->select(DB::raw('count(name) as total , name'))
                      ->groupBy('name')
+                     ->where("remove",1)
                      ->orderBy('total','desc')
-					 ->having('total', '>', $minimum_support)
+					 // ->having('total', '>', $minimum_support)
                      ->get();
+        $data['is_view_removed'] = true ;
 		$this->layout->content = View::make('keyword.view_all_keyword',$data);
 	}
 
