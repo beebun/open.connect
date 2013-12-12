@@ -6,6 +6,7 @@
 <script src="<?php echo asset('js/d3.v2.js'); ?>"></script>
 <script src="<?php echo asset('js/grid.js'); ?>"></script>
 <script src="<?php echo asset('js/bootbox.js'); ?>"></script>
+<script src="<?php echo asset('js/jedit.js'); ?>"></script>
 <script src="<?php echo asset('js/imgLiquid.js'); ?>"></script>
 </head>
     <body>

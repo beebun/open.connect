@@ -69,7 +69,8 @@ class HomeController extends BaseController {
 
 
 			$freq = Tag::get_frequency_by_user($keyword_list[$i]->name,$fid);
-
+			
+			$keyword_list[$i]->user_frequency = $freq ;
 			$keyword_list[$i]->frequency = $count ;
 			$keyword_list[$i]->ratio = ( $freq / $count ) * 100 ;
 			// if($count >= $this->minimum_support) 
@@ -116,7 +117,7 @@ class HomeController extends BaseController {
 		}
 		else
 		{
-			$keyword_list = Tag::select(DB::raw('distinct(name)'))->whereIn("tag.post_id",$wheres)->get();
+			$keyword_list = Tag::select(DB::raw('distinct(name)'))->whereIn("tag.post_id",$wheres)->where("remove", 0)->get();
 		}
 
 		$frequency = array();
@@ -143,19 +144,35 @@ class HomeController extends BaseController {
 		$list1 = $this->get_keyword_from_user($fid1);
 		$list2 = $this->get_keyword_from_user($fid2);
 
+		for($i=0;$i<count($list1);$i++){
+			$list1[$i]->name = strtolower($list1[$i]->name);
+		}
+
+		for($i=0;$i<count($list2);$i++){
+			$list2[$i]->name = strtolower($list2[$i]->name);
+		}
+
+		// dd($list2);
+
 		$intersect = array_intersect($list1,$list2);
 		$intersect = array_values($intersect);
 		
+		for($i=0;$i<count($intersect);$i++){
+			$intersect[$i]->name = ucfirst($intersect[$i]->name);
+		}
+
 		for($i=0;$i<count($intersect);$i++){
 			$intersect[$i]->f1 = Tag::get_frequency_by_user($intersect[$i]->name,$fid1);
 			$intersect[$i]->f2 = Tag::get_frequency_by_user($intersect[$i]->name,$fid2);
 
 			if($intersect[$i]->f1 < $intersect[$i]->f2){
 				$intersect[$i]->ratio = $intersect[$i]->f1 / $intersect[$i]->f2 ;
+				$intersect[$i]->max = $intersect[$i]->f2;
 			}else{
 				$intersect[$i]->ratio = $intersect[$i]->f2 / $intersect[$i]->f1 ;
+				$intersect[$i]->max = $intersect[$i]->f1;
 			}
-			
+			$intersect[$i]->max = $intersect[$i]->f1 + $intersect[$i]->f2 ;			
 			$intersect[$i]->ratio = $intersect[$i]->ratio*100;
 		}
 

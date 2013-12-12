@@ -40,3 +40,4 @@ Route::get('/sign_out', "UserController@sign_out");
 Route::post('/fb_callback', "UserController@fb_callback");
 
 Route::get('/me',"MeController@index");
+Route::any('/edit_minimum_frequency',"MeController@edit_minimum_frequency");

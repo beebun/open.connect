@@ -26,7 +26,7 @@
 
 <div style="float:left;width:780px;margin-left:5px;background-color:#efefef;padding:10px;font-size:18px;min-height:50%">
 <div class="head1" style="border-bottom:1px solid #999;margin-bottom:10px">Value Configuration</div>
-Minimum Frequency: <span class="strong value" id="minimum_frequency"><?php echo $minimum_support; ?></span> <span class="muted" id="edit_minimum_frequency" style="display:none">(click to edit)</span>
+Minimum Frequency: <span class="strong value" id="minimum_frequency" name="minimum_frequency"><?php echo $minimum_support; ?></span> <span class="muted" id="edit_minimum_frequency" style="display:none">(click to edit)</span>
 </div>
 
 <div style="clear:both"></div>
@@ -40,5 +40,16 @@ Minimum Frequency: <span class="strong value" id="minimum_frequency"><?php echo 
 		$('#edit_'+this.id).hide();
 	}
 	);
+
+
+	 $('#minimum_frequency').editable('./edit_minimum_frequency', {
+         type : 'text',
+         name : 'minimum_frequency',
+         indicator : 'Saving...',
+         tooltip   : 'Click to edit...',
+         callback : function(value, settings) {
+        }
+     });
+
 </script>
 @endsection

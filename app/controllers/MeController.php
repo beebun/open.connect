@@ -18,6 +18,13 @@ class MeController extends BaseController {
 		$this->layout->content = View::make('me.index',$data);
 	}
 
+	public function edit_minimum_frequency(){
+		$value = Input::get('minimum_frequency', false);
+		$config = new Configs ;
+		$config->_save('minimum_support', $value);
+		return $value ;
+	}
+
 }
 
 

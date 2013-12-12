@@ -10,9 +10,8 @@ class Configs extends Eloquent {
 
  	public function _save($name,$value){
 		$user = Auth::user();
-		Configs::table('config')
-            ->where('name', $name)->where("owner_id",$user['id'])
-            ->update(array('remove' => 1));
+		Configs::where('name', $name)->where("owner_id",$user['id'])
+            ->update(array('value' => $value));
  	}
 }
 

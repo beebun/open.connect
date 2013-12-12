@@ -32,7 +32,9 @@
 <?php foreach($intersect as $each): ?>
 	<a href="<?php echo url('keyword',$each->name); ?>">
 	<div class="mutual-block">
-		<span style="font-size:20px;color:#333"><?php echo $each->name ; ?></span><br/><br/>
+		<span style="font-size:20px;color:#333"><?php echo $each->name ; ?></span>
+		<div style="float:right;font-weight:bold"><?php echo $each->max ; ?></div>
+		<br/><br/>
 		<div style="font-weight:bold;color:#666;float:right;margin-left:5px"><?php printf("%.2f%%",$each->ratio); ?></div>
 		<div class="progress progress-striped">
 			<?php if($each->ratio > 50) $str="success" ;?>
