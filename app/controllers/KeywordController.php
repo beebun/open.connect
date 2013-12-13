@@ -94,7 +94,7 @@ class KeywordController extends BaseController {
 			array_push($keyword_id, $each->post_id);
 		}
 
-		$keyword_list = DB::table('tag')->select(DB::raw('distinct(name)'))->whereIn('post_id',$keyword_id)->get();
+		$keyword_list = DB::table('tag')->select(DB::raw('distinct(name)'))->where("remove", 0)->whereIn('post_id',$keyword_id)->get();
 
 		$frequency = array();
 		$remove = array();
