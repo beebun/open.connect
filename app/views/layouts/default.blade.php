@@ -235,7 +235,6 @@
     speed: 200,
     duration: 300,
     effect: 'fadeInOnAppear',
-    complete: onComplete
   }
 });
 

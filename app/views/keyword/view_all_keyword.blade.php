@@ -61,9 +61,12 @@
 		$.post( "<?php echo url('keyword/remove_tag'); ?>", 
         {name: tag_name})
         .done(function( data2 ) {
+
         	is_removing = true; 
 			$('#'+id).fadeOut(500);
 			is_removing = false ;
+        }).error(function(data){
+
         });
 	}
 

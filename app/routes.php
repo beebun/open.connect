@@ -26,12 +26,12 @@ Route::get('/get_user_data/{fid}', "HomeController@get_user_data");
 /*	KeywordController */
 Route::get('/keyword', "KeywordController@index");
 Route::get('/keyword/remove', "KeywordController@view_removed_tags");
-Route::post('/keyword/remove_tag', "KeywordController@remove_tag");
+Route::any('/keyword/remove_tag', "KeywordController@remove_tag");
 Route::post('/keyword/add_tag', "KeywordController@add_tag");
 
 Route::get('/keyword/{keyword}', "KeywordController@view");
 Route::get('/count/{keyword}', "KeywordController@get_frequency");
-Route::get('/test', "KeywordController@get_frequency_by_user");
+Route::get('/test', "KeywordController@test");
 Route::get('/keyword/graph/{keyword}',"KeywordController@view_keyword_graph");
 
 Route::get('/home', "UserController@home");
