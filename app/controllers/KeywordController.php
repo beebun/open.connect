@@ -11,7 +11,7 @@ class KeywordController extends BaseController {
 	public function index()
 	{	
 		$minimum_support = self::config_value("minimum_support");
-		$data['tag_list'] = Tag::get_list();
+		$data['tag_list'] = Keyword::orderBy("likelihood","desc")->where('remove',0)->where("total",'>',$minimum_support)->get();
         $data['is_view_removed'] = false ;
 		$this->layout->content = View::make('keyword.view_all_keyword',$data);
 	}
@@ -29,7 +29,8 @@ class KeywordController extends BaseController {
 
 	public function view_removed_tags(){
 		$minimum_support = self::config_value("minimum_support");
-		$data['tag_list'] = Tag::get_removed_list();
+		// $data['tag_list'] = Tag::get_removed_list();
+		$data['tag_list'] = Keyword::where("remove",1)->get();
         $data['is_view_removed'] = true ;
 		$this->layout->content = View::make('keyword.view_all_keyword',$data);
 	}
@@ -48,7 +49,7 @@ class KeywordController extends BaseController {
 	{
 		$minimum_support = self::config_value("minimum_support");
 
-		$data['tag_list'] = Tag::get_tag_list();
+		$data['tag_list'] = Tag::get_tag_list($keyword);
 		
 		$keyword_list = array();
 		$keyword_id = array();
@@ -80,6 +81,7 @@ class KeywordController extends BaseController {
 		$frequency = array_slice($frequency,0,10);
 
 		$data['keyword']	= $keyword ;
+
 		$data['keyword_list'] = json_encode($keyword_temp) ;
 
 		$this->layout->content = View::make('keyword.view_keyword_graph',$data);
@@ -97,8 +99,6 @@ class KeywordController extends BaseController {
 		// echo "<pre>";
 		// print_r(Tag::get_likelihood("เอเชีย"));
 		// echo "</pre>";
-		die();
-
 	}
 
 }

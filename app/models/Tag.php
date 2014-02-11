@@ -7,6 +7,10 @@ class Tag extends Eloquent  {
 
 	protected $table = 'tag';
 
+	protected $guarded = array();
+
+	protected $appends = array();
+
 	public function user_post()
 	{
         return $this->belongsTo('UserPost',"post_id");
@@ -17,24 +21,27 @@ class Tag extends Eloquent  {
 	public static function remove_by_name($name){
 		Tag::where('name', $name)
             ->update(array('remove' => 1));
+        Keyword::where('name', $name)
+           	->update(array('remove' => 1));
         echo '';
 	}
 
 	public static function add_by_name($name){
 		Tag::where('name', $name)
             ->update(array('remove' => 0));
+        Keyword::where('name', $name)
+           	->update(array('remove' => 0));
 	}
 
 	/* ==== Get ==== */
 	
 	public static function get_frequency_by_user($keyword, $fid)
 	{
-		$post = DB::table('user_post')->where("user_id",$fid)->get();
-		$post_id = array();
-		foreach($post as $each){
-			array_push($post_id,$each->post_id);
-		}
-		$tag = Tag::select(DB::raw("count(name) as total"))->whereIn("post_id",$post_id)->where("name",$keyword)->get();
+
+		$tag = Tag::select(DB::raw("count(name) as total"))
+					// ->whereIn("post_id",$post_id)
+					->where("user_id", $fid)
+					->where("name",$keyword)->get();
 		return $tag[0]->total ;
 	}
 
@@ -84,11 +91,6 @@ class Tag extends Eloquent  {
 								->orderBy('total','desc')
 								->having('total', '>', $minimum_support)
 								->get();
-
-		foreach($data as $each)
-		{
-
-		}
 
 		return $data ;
 	}
@@ -190,6 +192,7 @@ class Tag extends Eloquent  {
 
 		$data = Tag::select(DB::raw('distinct(post_id) , post_id , name '))
 				->where("name",$name)
+				->where("status",0)
 				->where("owner_id", $user_id)
 				->get();
 
@@ -199,7 +202,6 @@ class Tag extends Eloquent  {
 		foreach($data as $each)
 		{
 			$temp = Tag::get_each_likelihood($each->post_id, $name);
-			// array_push($result, $temp);
 			$i++;
 			$total = $total + $temp ;
 		}
@@ -216,9 +218,11 @@ class Tag extends Eloquent  {
 
 		$tf_a = Tag::where("name", $name)
 					->where("post_id", $post_id)
+					->where("owner_id", $user_id)
 					->count();
 
 		$tf_b = Tag::where("post_id", $post_id)
+					->where("owner_id", $user_id)
 					->count();
 
 		$tf = $tf_a / $tf_b ;

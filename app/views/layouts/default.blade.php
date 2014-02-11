@@ -1,6 +1,12 @@
 <html>
 <head>
-<link href="<?php echo asset('css/bootstrap.css'); ?>" rel="stylesheet">
+<link href="<?php echo asset('css/bootstrap.css'); ?>" rel="stylesheet">    
+    
+
+<script src="<?php echo asset('js/angular/angular.js'); ?>"></script>
+<script src="<?php echo asset('js/angular/facebook.js'); ?>"></script>
+
+<script src="<?php echo asset('js/angular/import_data.js'); ?>"></script>
 <script src="<?php echo asset('js/jquery-1.10.2.min.js'); ?>"></script>
 <script src="<?php echo asset('js/bootstrap.min.js'); ?>"></script>
 <script src="<?php echo asset('js/d3.v2.js'); ?>"></script>
@@ -114,13 +120,13 @@
 
     .btn{
         border-radius: 0px;
-        background-color:#666;
-        border-color:#666;
+        /*background-color:#666;*/
+        /*border-color:#666;*/
     }
     .btn:hover{
         border-radius: 0px;
-        background-color:#333;
-        border-color:#333;
+        /*background-color:#333;*/
+        /*border-color:#333;*/
     }
     .btn-large{
         /*width:200px;*/
@@ -171,6 +177,11 @@
         text-align:center;
         margin:0px auto;
     }
+
+    .empty{
+        color:#333;
+        font-weight: bold;
+    }
     
     </style>
     <?php 
@@ -189,6 +200,8 @@
 		      <li <?php if($segment == "") echo 'class="active"' ; ?> ><a href="<?php echo url('/'); ?>">Home</a></li>
 		      <li <?php if($segment == "user") echo 'class="active"' ; ?>><a href="<?php echo url('/user'); ?>">User</a></li>
 		      <li <?php if($segment == "keyword") echo 'class="active"' ; ?>><a href="<?php echo url('/keyword'); ?>">Keyword</a></li>
+            <li <?php if($segment == "group") echo 'class="active"' ; ?>><a href="<?php echo url('/group'); ?>">Group</a></li>
+
               <li <?php if($segment == "me") echo 'class="active"' ; ?>><a href="<?php echo url('/me'); ?>">Me</a></li>
 		    </ul>
             <?php endif ?>
@@ -212,7 +225,7 @@
           </div>
 		</nav>
 
-        <div class="container1">
+        <div class="container1" data-ng-app="OpenConnect">
                 @if(Session::has('message'))
                     <div class="message" id="msg"><span style="font-weight:bold">Message</span> {{ Session::get('message')}}<div style="float:right"><a href="javascript:close_msg()">X</a></div></div>
                 @endif

@@ -10,7 +10,21 @@ class User extends Eloquent  {
 	 *
 	 * @var string
 	 */
-	protected $table = 'user';
+	protected $table = 'friend';
+
+    public static function get_rank($fid)
+    {
+        $tags = array();
+        $data = Tag::select(DB::raw("distinct(tag.name)"))->where("user_id", $fid)->get();
+        foreach($data as $each){
+            array_push($tags, $each->name);
+        }
+
+        if(count($tags) == 0)
+            return 0;
+        else
+            return Keyword::whereIn("name", $tags)->count();
+    }
 
  	public function user_post()
     {

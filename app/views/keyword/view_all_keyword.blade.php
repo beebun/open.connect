@@ -18,7 +18,7 @@
 </div>
 <div style="clear:both"></div>
 
-<div class="body">
+<div id="content" class="body">
 <br/><br/><br/><br/>
 	<?php $i=0; ?>
 	<?php foreach($tag_list as $each): ?>
@@ -27,21 +27,55 @@
 			<input type="hidden" value="<?php echo $each->name; ?>" id="hidden-<?php echo $i; ?>">
 			<div class="block keyword-block" id="<?php echo $i ;?>" rel="block-<?php echo $i ; ?>">
 				<div class="keyword-block-rank"><?php echo $each->total ; ?></div>
+				@if($each->has_group)
+				* <?php echo $each->name ; ?>
+				@else
 				<?php echo $each->name ; ?>
+				@endif
 			</div>
 		</a>
 		<?php if(!$is_view_removed): ?>
-		<div id="block-<?php echo $i ; ?>" class="widget-container" style=";float:left;margin-left:-60px;margin-top:28px">
-			<a href="javascript:remove_tag(<?php echo $i++; ?>);" class="btn btn-success btn-xs">Remove</a>
+			@if($each->has_group)
+		<div id="block-<?php echo $i ; ?>" class="widget-container" style=";float:left;margin-left:-60px;margin-top:28px"><a href="javascript:remove_tag(<?php echo $i++; ?>);" class="btn btn-danger btn-xs">Remove</a>
     	</div>
+			@else
+		<div id="block-<?php echo $i ; ?>" class="widget-container" style=";float:left;margin-left:-143px;margin-top:28px"><a href="javascript:add_to_group({{ $each->id }});" class="btn btn-success btn-xs">Add to group</a><a href="javascript:remove_tag(<?php echo $i++; ?>);" class="btn btn-danger btn-xs">Remove</a>
+    	</div>
+    		@endif
     	<?php else:?>
     	<div id="block-<?php echo $i ; ?>" class="widget-container" style=";float:left;margin-left:-39px;margin-top:28px">
-			<a href="javascript:add_tag(<?php echo $i++; ?>);" class="btn btn-success btn-xs">Add</a>
+			<a href="javascript:add_tag(<?php echo $i++; ?>);" class="btn btn-primary btn-xs">Add</a>
     	</div>
     	<?php endif ?>
 	<?php endforeach ?>
 	<div style="clear:both"></div>
 </div>
+
+
+<!-- Button trigger modal -->
+<!-- <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
+  Launch demo modal
+</button> -->
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="myModalLabel">Add Keyword To Group</h4>
+      </div>
+      <div class="modal-body" id="add-to-group-content">
+      </div>
+      <div class="modal-footer">
+      	<input type="hidden" id="keyword-id" value="">
+        <button id="close-modal" type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" onclick="save_add_to_group()" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 
 <script type="text/javascript">
 
@@ -66,6 +100,46 @@
 			$('#'+id).fadeOut(500);
 			is_removing = false ;
         }).error(function(data){
+
+        });
+	}
+
+	function add_to_group(id){
+
+		$('#keyword-id').val(id);
+		$.get( "<?php echo url('group/add_to_group'); ?>")
+        .done(function( data ) {
+        	$('#add-to-group-content').html(data);
+			$('#myModal').modal("show");
+        }).error(function(data){
+
+        });
+	}
+
+	function save_add_to_group(){
+		var group_id_val = $('#group-id').val();
+		var keyword_id_val = $('#keyword-id').val();
+		// alert( group_id + " " + keyword_id );
+
+		$.post( "<?php echo url('group/add_to_group'); ?>", 
+        {keyword_id: keyword_id_val,group_id: group_id_val})
+        .done(function( data2 ) {
+        	$('#close-modal').click();
+   //      	$('#content').load("{{ url('keyword') }} #content");
+   //      	$('.widget-container').hide();
+
+			// $('.block').mouseover(function() {
+			// 	if(!is_removing){
+			// 		var $this = $(this);
+			// 		var id = $this.attr('rel');
+			// 		var $currentWidget = $('#' + id);
+			// 		$currentWidget.show().siblings('.widget-container').hide();
+			// 	}
+			// });
+			// $('.body').mouseleave(function() {
+			//     $('.widget-container').hide();
+			// });
+
 
         });
 	}

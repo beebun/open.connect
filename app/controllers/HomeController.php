@@ -13,80 +13,106 @@ class HomeController extends BaseController {
 		$this->layout->content = View::make('home.sign_in',$data);
 	}
 
+	public function view_cluster()
+	{
+		$data = array();
+
+		$cluster_number = UserPost::select(DB::raw("max(cluster_id) as count"))->where("is_frequent", 1)->first();
+		$cluster_number = $cluster_number->count ;
+
+		for($i=1;$i<=$cluster_number;$i++)
+		{
+			$count = UserPost::where("cluster_id", $i)->count();
+			if($count > 200)
+				$cluster[$i] = array();
+			else
+				$cluster[$i] = UserPost::where("cluster_id", $i)->get();
+		}
+
+		$data['cluster'] = $cluster ;
+
+		$this->layout->content = View::make('home.cluster',$data);
+	}
+
 	public function index()
 	{
 		$minimum_support = self::config_value("minimum_support");
-
-		$data['tag_list'] = DB::table('tag')
-                     ->select(DB::raw('count(name) as total , name'))
-                     ->groupBy('name')
-                     ->where("remove",0)
-                     ->orderBy('total','desc')
-					 ->having('total', '>', $minimum_support)
-					 ->limit('15')
-                     ->get();
-		// $this->layout->content = View::make('keyword.view_all_keyword',$data);
-
+		$data['keyword_list'] = Keyword::where('remove',0)
+								->where('total', '>', $minimum_support)
+								->orderBy("likelihood",'desc')
+								->limit("10")->get();
 		$user = User::limit("10")->get();
 		$data['user_list'] = $user ;
-		// $this->layout->content = View::make('user.view_all_user',$data);
 
+		// $rank     = array();
+		// $all_user = User::all();
+		// foreach($all_user as $each){
+		// 	$temp[0] = User::get_rank($each->fid);
+		// 	$temp[1] = User::find($each->id) ;
+		// 	User::where("id", $each->id)->update(array("rank"=>$temp[0]));
+		// 	array_push($rank, $temp);
+		// }
+
+		$data['rank'] = User::orderBy("rank","desc")->limit(10)->get();
 
 		$this->layout->content = View::make('home.index',$data);
 	}
 
+	public static function cmp_rank($a, $b)
+	{
+    	return $a[0] <= $b[0] ;
+	}
+
 	public function user()
 	{	
-		$user = User::limit("1000")->get();
+		$user = User::orderBy("rank","desc")->limit("1000")->get();
 		$data['user_list'] = $user ;
 		$this->layout->content = View::make('user.view_all_user',$data);
 	}
 
 	public function view($fid)
 	{
-		$post_id = UserPost::where("user_post.user_id",$fid)->get();
 
-		$wheres = array();
-		foreach($post_id as $each)
-		{
-			array_push($wheres, $each->post_id);
-		}
+		$keyword_list = Tag::select(DB::raw('distinct(name)'))
+								->where("user_id",$fid)
+								->where("remove", 0)
+								->get();
 
-		if(count($wheres) == 0)
-		{
-			$keyword_list = array();
-		}
-		else
-		{
-			$keyword_list = Tag::select(DB::raw('distinct(name)'))->whereIn("tag.post_id",$wheres)->get();
-		}
-
-		$frequency = array();
-		$remove = array();
+		$frequency    = array();
+		$remove       = array();
 		$keyword_temp = array();
-		for($i=0;$i<count($keyword_list);$i++){
-			$count = $this->get_frequency($keyword_list[$i]->name);
 
+		for($i=0;$i<count($keyword_list);$i++){
+			
+			$count = $this->get_frequency($keyword_list[$i]->name);
 
 			$freq = Tag::get_frequency_by_user($keyword_list[$i]->name,$fid);
 			
 			$keyword_list[$i]->user_frequency = $freq ;
 			$keyword_list[$i]->frequency = $count ;
 			$keyword_list[$i]->ratio = ( $freq / $count ) * 100 ;
+			
 			// if($count >= $this->minimum_support) 
 				array_push($keyword_temp,$keyword_list[$i]);
+
 		}
-	
+		
+		usort($keyword_temp, "self::cmp");
 		$data['tag_list'] = $keyword_temp ;
 		$data['fid'] = $fid ;
-		$data['user_data'] = User::where("user.fid",$fid)->get() ;
+		$data['user_data'] = User::where("fid",$fid)->get() ;
 
 		$this->layout->content = View::make('user.view_user_data',$data);
 	}
 
+	static function cmp($a, $b)
+	{
+    	return $a->user_frequency <= $b->user_frequency ;
+	}
+
 	public function get_user_data($fid)
 	{
-		$user_data = User::where("user.fid",$fid)->get();
+		$user_data = User::where("fid",$fid)->get();
  		$username = $user_data[0]->username ;
  		$fid = $user_data[0]->fid ;
 
@@ -117,7 +143,10 @@ class HomeController extends BaseController {
 		}
 		else
 		{
-			$keyword_list = Tag::select(DB::raw('distinct(name)'))->whereIn("tag.post_id",$wheres)->where("remove", 0)->get();
+			$keyword_list = Tag::select(DB::raw('distinct(name)'))
+								->whereIn("tag.post_id",$wheres)
+								->where("remove", 0)
+								->get();
 		}
 
 		$frequency = array();

@@ -13,10 +13,12 @@
 
 
 Route::get('/login', "HomeController@sign_in");
+Route::get('/logout', "UserController@sign_out");
 Route::get('/', "HomeController@index");
 Route::get('/user', "HomeController@user");
-Route::get('/keyword', "HomeController@keyword");
+Route::get('/cluster', "HomeController@view_cluster");
 Route::get('/mutual_interests/{fid1}/{fid2}', "HomeController@mutual_interests");
+Route::any('/save_news_feed', "NewsFeedController@save_news_feed");
 
 
 /*	UserController	*/
@@ -41,3 +43,14 @@ Route::post('/fb_callback', "UserController@fb_callback");
 
 Route::get('/me',"MeController@index");
 Route::any('/edit_minimum_frequency',"MeController@edit_minimum_frequency");
+Route::any('/generate_keyword',"MeController@generate_keyword");
+Route::any('/generate_keyword_rank',"MeController@generate_keyword_rank");
+
+
+Route::any('/group',"GroupController@index");
+Route::get('/group/create',"GroupController@create");
+Route::post('/group/create',"GroupController@post_create");
+Route::get('/group/view/{group_id}',"GroupController@view");
+Route::get('/group/delete/{group_id}',"GroupController@delete");
+Route::get('/group/add_to_group',"GroupController@add_to_group");
+Route::post('/group/add_to_group',"GroupController@post_add_to_group");

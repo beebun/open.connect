@@ -37,23 +37,22 @@ class UserController extends BaseController {
 	    $profile = Profile::whereUid($uid)->first();
 	    if (empty($profile)) {
 	 
-	        $user = new Users;
-	        $user->name = $name ;
-	        $user->email = $email;
-	        $user->photo = 'https://graph.facebook.com/'.$username.'/picture?type=large';
-	 
-	        $user->save();
+	        $account = new Account;
+	        $account->name = $name ;
+	        $account->email = $email;
+	        $account->photo = 'https://graph.facebook.com/'.$username.'/picture?type=large';
+	        $account->save();
 	 
 	        $profile = new Profile();
 	        $profile->uid = $uid;
 	        $profile->username = $username;
-	        $profile = $user->profiles()->save($profile);
+	        $profile = $account->profiles()->save($profile);
 	    }
 	 
 	    $profile->access_token = $access_token;
 	    $profile->save();
 	 
-	    Auth::login(Users::where("id",$profile->users_id)->first());
+	    Auth::login(Account::where("id",$profile->account_id)->first());
  	}
 
 }

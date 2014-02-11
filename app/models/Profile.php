@@ -1,6 +1,8 @@
 <?php
  
 class Profile extends Eloquent {
+
+	protected $table = 'profile';
  
     public function users()
     {
