@@ -62,7 +62,10 @@ jQuery(function(){
   var springy = window.springy = jQuery('#springydemo').springy({
     graph: graph,
     nodeSelected: function(node){
-     	console.log('Node selected: ' + JSON.stringify(node.data));
+    	// var str = "./"+node.data.label ;
+    	// alert(str);
+    	window.location.replace("../"+node.data.label);
+     	// console.log('Node selected: ' + JSON.stringify(node.data));
     }
   });
 

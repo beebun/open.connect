@@ -58,7 +58,11 @@ class KeywordController extends BaseController {
 			array_push($keyword_id, $each->post_id);
 		}
 
-		$keyword_list = DB::table('tag')->select(DB::raw('distinct(name)'))->where("remove", 0)->whereIn('post_id',$keyword_id)->get();
+		$keyword_list = DB::table('tag')
+						->select(DB::raw('distinct(name)'))
+						->where("remove", 0)
+						->whereIn('post_id',$keyword_id)
+						->get();
 
 		$frequency = array();
 		$remove = array();
@@ -85,6 +89,22 @@ class KeywordController extends BaseController {
 		$data['keyword_list'] = json_encode($keyword_temp) ;
 
 		$this->layout->content = View::make('keyword.view_keyword_graph',$data);
+	}
+
+	public function view_keyword_post($name)
+	{
+		$user    = Auth::user();
+		$post_id = array();
+		$data    = Tag::where("name",$name)->where("remove",0)->where("owner_id",$user['id'])->get();
+		foreach($data as $each)
+			array_push($post_id, $each->post_id);
+
+		array_unique($post_id);
+		
+		$param['posts'] = UserPost::whereIn("post_id", $post_id)->get();
+		$param['name']  = $name ;
+
+		$this->layout->content = View::make('keyword.view_keyword_post',$param);
 	}
 
 	static function cmp($a, $b)

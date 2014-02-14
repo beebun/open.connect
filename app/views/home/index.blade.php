@@ -9,6 +9,19 @@
 
 <div class="body" style="margin-top:10px;">
 
+
+<div style="margin-bottom:10px;width:100%;padding:10px;background-color:#fff;margin-right:10px;box-shadow: 1px 1px 1px 0px #d0d0d0;">
+	<div style="font-size:20px;margin-bottom:10px">Group <span class="pull-right"><a href="{{ url('group') }}" class="btn btn-primary">View All</a></span></div>
+	@foreach($groups as $group)
+		<div style="width:150px;float:left;background-color:#efefef;padding:10px;margin-right:5px">
+		<a href="{{ url('group/view/'.$group->id) }}"><span style="font-size:20px">{{ $group->name }}</span></a><br/>
+		Total Keywords: {{ $group->total_keyword}}
+		</div>
+	@endforeach
+	<div style="clear:both"></div>
+</div>
+
+<div class="clear"></div>
 	<div style="width:57%;float:left;padding:10px;background-color:#fff;margin-right:10px;box-shadow: 1px 1px 1px 0px #d0d0d0;">
 		<div style="font-size:20px;margin-bottom:10px">Suggested Keywords</div>
 		<?php $i = 1; ?>

@@ -53,6 +53,8 @@ class HomeController extends BaseController {
 		// 	array_push($rank, $temp);
 		// }
 
+		$data['groups'] = Group::all();
+
 		$data['rank'] = User::orderBy("rank","desc")->limit(10)->get();
 
 		$this->layout->content = View::make('home.index',$data);
@@ -65,7 +67,7 @@ class HomeController extends BaseController {
 
 	public function user()
 	{	
-		$user = User::orderBy("rank","desc")->limit("1000")->get();
+		$user = User::where("rank",'>',0)->orderBy("rank","desc")->limit("1000")->get();
 		$data['user_list'] = $user ;
 		$this->layout->content = View::make('user.view_all_user',$data);
 	}
@@ -73,10 +75,11 @@ class HomeController extends BaseController {
 	public function view($fid)
 	{
 
-		$keyword_list = Tag::select(DB::raw('distinct(name)'))
-								->where("user_id",$fid)
-								->where("remove", 0)
-								->get();
+		$keyword_list = Tag::select(DB::raw('distinct(tag.name)'))
+		            		->join('keyword', 'tag.name', '=', 'keyword.name')
+							->where("tag.user_id",$fid)
+							->where("tag.remove", 0)
+							->get();
 
 		$frequency    = array();
 		$remove       = array();
@@ -207,12 +210,20 @@ class HomeController extends BaseController {
 
 		$data['list1'] = $list1 ;
 		$data['list2'] = $list2 ;
+		
+		usort($intersect, "self::cmp_mutual_interest");
+
 		$data['intersect'] = $intersect ;
 
 		$data['user1'] = $this->user->get($fid1);
 		$data['user2'] = $this->user->get($fid2);
 
 		$this->layout->content = View::make('user.view_mutual_interests',$data);
+	}
+
+	static function cmp_mutual_interest($a, $b)
+	{
+    	return $a->max <= $b->max ;
 	}
 
 }

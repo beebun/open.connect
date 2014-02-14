@@ -12,6 +12,22 @@ class User extends Eloquent  {
 	 */
 	protected $table = 'friend';
 
+    protected $guarded = array("");
+
+    protected $appends = array("label");
+
+    public function getLabelAttribute()
+    {
+        if(self::utf8_strlen($this->username) > 25) return mb_substr($this->username, 0,25)."...";
+        else return $this->username ;
+    }
+
+    public static function utf8_strlen($s) {
+        $c = strlen($s); $l = 0;
+        for ($i = 0; $i < $c; ++$i) if ((ord($s[$i]) & 0xC0) != 0x80) ++$l;
+        return $l;
+    }
+
     public static function get_rank($fid)
     {
         $tags = array();
@@ -28,7 +44,7 @@ class User extends Eloquent  {
 
  	public function user_post()
     {
-        return $this->hasMany('UserPost',"fid");
+        return $this->hasMany('UserPost',"user_id");
     }
 
     public function get_username($fid){

@@ -17,6 +17,7 @@
 
 <span class="pull-right">
 <a href="{{ url('group/') }}" class="btn btn-default">Back</a>
+<a href="{{ url('group/edit/'.$group->id) }}" class="btn btn-default">Edit</a>
 <a href="{{ url('group/delete/'.$group->id) }}" class="btn btn-danger">Delete</a>
 </span>
 </div></div>
@@ -43,12 +44,14 @@
 <span class="pull-left"><strong>User</strong></span>
 <div style="clear:both"></div>
 @foreach($users as $user)
+	<a href="<?php echo url('view',$user->fid); ?>" class="row1">
 	<div class="block" >
 		<div class="block-img"><img class="fb-pic border" src="http://graph.facebook.com/<?php echo $user->fid ; ?>/picture?type=square" ></div>
 		<div class="block-name">
-			<?php echo $user->username; ?>
+			<?php echo $user->label; ?>
 		</div>
 	</div>
+	</a>
 @endforeach
 
 </div>

@@ -202,7 +202,7 @@
 		      <li <?php if($segment == "keyword") echo 'class="active"' ; ?>><a href="<?php echo url('/keyword'); ?>">Keyword</a></li>
             <li <?php if($segment == "group") echo 'class="active"' ; ?>><a href="<?php echo url('/group'); ?>">Group</a></li>
 
-              <li <?php if($segment == "me") echo 'class="active"' ; ?>><a href="<?php echo url('/me'); ?>">Me</a></li>
+              <li <?php if($segment == "me") echo 'class="active"' ; ?>><a href="<?php echo url('/me'); ?>">Config</a></li>
 		    </ul>
             <?php endif ?>
 

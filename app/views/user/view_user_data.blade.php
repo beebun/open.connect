@@ -13,10 +13,10 @@
 			<div style="font-size:15px;"><strong><?php echo count($tag_list); ?></strong> relevant keywords</div>
 		</div>
 		<div style="float:right;margin-right:20px;margin-top:20px">
-			<a href="" class="btn btn-primary btn-large" >
-				View Facebook Account
+			<!-- <a href="" class="btn btn-primary btn-large" > -->
+				<!-- View Facebook Account -->
 				<!-- <img src="http://www.underconsideration.com/brandnew/archives/facebook_logo_detail.gif" style="width:70px;margin-top:12px;margin-right:20px"> -->
-			</a>
+			<!-- </a> -->
 		</div>
 		<div style="clear:both"></div>
 	</div>

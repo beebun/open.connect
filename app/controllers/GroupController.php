@@ -66,4 +66,17 @@ class GroupController extends BaseController {
 		$group_keyword->save();
 	}
 
+	public function edit($id)
+	{
+		$data['group'] = Group::find($id);
+		$this->layout->content = View::make('group.edit', $data);	
+	}
+
+	public function post_edit($id)
+	{
+		$name = Input::get('name', false);
+		Group::where("id",$id)->update(array("name"=>$name));
+		return Redirect::to('group/view/'.$id);
+	}
+
 }

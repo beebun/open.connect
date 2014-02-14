@@ -135,6 +135,9 @@ angular.module('OpenConnect', ['facebook'],
                 $http.post('./generate_keyword',{'data': null}
                 ).success(function(data, status, headers, config) {
                     $scope.isGeneratingKeyword = false ;
+                    
+                    bootbox.alert("Complete", function(result) {});
+
                 }).error(function(data, status) { 
                 });
             }
@@ -144,6 +147,8 @@ angular.module('OpenConnect', ['facebook'],
                 $http.post('./generate_keyword_rank',{'data': null}
                 ).success(function(data, status, headers, config) {
                     $scope.isGeneratingKeywordRank = false ;
+
+                    bootbox.alert("Complete", function(result) {});
                 }).error(function(data, status) { 
                 });
             }

@@ -35,6 +35,7 @@ Route::get('/keyword/{keyword}', "KeywordController@view");
 Route::get('/count/{keyword}', "KeywordController@get_frequency");
 Route::get('/test', "KeywordController@test");
 Route::get('/keyword/graph/{keyword}',"KeywordController@view_keyword_graph");
+Route::get('/keyword/post/{keyword}',"KeywordController@view_keyword_post");
 
 Route::get('/home', "UserController@home");
 Route::get('/sign_in', "UserController@sign_in");
@@ -52,5 +53,9 @@ Route::get('/group/create',"GroupController@create");
 Route::post('/group/create',"GroupController@post_create");
 Route::get('/group/view/{group_id}',"GroupController@view");
 Route::get('/group/delete/{group_id}',"GroupController@delete");
+
+Route::get('/group/edit/{group_id}',"GroupController@edit");
+Route::post('/group/edit/{group_id}',"GroupController@post_edit");
+
 Route::get('/group/add_to_group',"GroupController@add_to_group");
 Route::post('/group/add_to_group',"GroupController@post_add_to_group");

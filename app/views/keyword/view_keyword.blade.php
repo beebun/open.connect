@@ -9,6 +9,8 @@
 			<div style="font-size:15px;"><strong><?php echo count($user_list); ?></strong> engaged users</div>
 		</div>
 		<div style="float:right">
+			<a href="<?php echo url('/keyword/post/'.$keyword.''); ?>" class="btn btn-primary btn-large" style="margin-top:25px;margin-right:10px;">View Post</a>
+
 			<a href="<?php echo url('/keyword/graph/'.$keyword.''); ?>" class="btn btn-success btn-large" style="margin-top:25px;margin-right:20px;">View Graph</a></div>
 		<div style="clear:both"></div>
 	</div>

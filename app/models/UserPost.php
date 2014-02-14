@@ -14,6 +14,13 @@ class UserPost extends Eloquent  {
 	
 	protected $guarded = array();
 
+	protected $appends = array("user_owner");
+
+	public function getUserOwnerAttribute()
+	{
+		return User::where("fid",$this->user_id)->first();
+	}
+
 	public function _save()
 	{
 		$user  = Auth::user();
